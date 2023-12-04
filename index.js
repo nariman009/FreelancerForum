@@ -11,25 +11,34 @@ const freelancers = [
 const names = ['Sam', 'Tom', 'Joe', 'Kim', 'Pil'];
 const occupations = ['Developer', 'Programmer', 'Tester', 'Designer'];
 
-// console.log(spanCount);
-spanCount.innerHTML = freelancers.length;
+function render(){
+    spanCount.innerHTML = freelancers.length;
 
-// let sum = 0
+    const average = freelancers.reduce((acc, item) => (acc + item.price), 0)/freelancers.length;
+    spanAverageCount.innerHTML = average.toFixed(2);
 
-// freelancers.forEach((freelancer)=>{
-//     sum = sum + freelancer.price;
-// });
+    const html = freelancers.map((freelancer)=>{
+        return `
+            <li>${freelancer.name} is a freelance ${freelancer.occupation } who charges $${freelancer.price} per hour.</li>
+        `
+    }).join("");
+    ul.innerHTML = html;
+}
 
-// const average = sum / freelancers.length;
+const interval = setInterval(()=>{
+    // const nameIndex = Math.floor(Math.random()*names.length) ;
+    const name = names[(Math.floor(Math.random() * names.length))]
+    const occupation = occupations[(Math.floor(Math.random() * occupations.length))]
+    const price = Math.floor((Math.random()+0.7)*10)*5
 
-const average = freelancers.reduce((acc, item) => (acc + item.price), 0)/freelancers.length;
-spanAverageCount.innerHTML = average;
-
-const html = freelancers.map((freelancer)=>{
-    return `
-        <li>${freelancer.name}</li>
-    `
-});
-
-// console.log(html);
-ul.innerHTML = html;
+    const randomFreelancer = {
+        name: name,
+        occupation: occupation,
+        price: price
+    };
+    freelancers.push(randomFreelancer);
+    render();
+    if(freelancers.length === 15) {
+        clearInterval(interval);
+    };
+}, 1000)
